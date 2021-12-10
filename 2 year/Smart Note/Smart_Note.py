@@ -47,7 +47,9 @@ def delete_note_func():
         list_teg.clear()
         show_all_data()
     except:
-        pass
+        error = QMessageBox()
+        error.setText('Выберете заметку, которую нужно удалить')
+        error.exec()
 
 
 def save_note_func():
@@ -67,7 +69,9 @@ def add_to_note_func():
         save_func()
         list_teg.addItem(teg)
     except:
-        pass
+        error = QMessageBox()
+        error.setText('Выберете заметку, к которому добавить тег')
+        error.exec()
 
 
 def remove_from_note_func():
@@ -80,7 +84,9 @@ def remove_from_note_func():
         list_teg.clear()
         show_all_data()
     except:
-        pass
+        error = QMessageBox()
+        error.setText('Выберете заметку, с которой удалить тег')
+        error.exec()
 
 
 def search_by_teg_func():
@@ -110,6 +116,10 @@ def enter_func():
         login_win.hide()
         show_all_data()
         main_win.show()
+    else:
+        error = QMessageBox()
+        error.setText('Логин или пароль не верный')
+        error.exec()
 
 
 def registration_func():
@@ -139,12 +149,17 @@ def save_func():
         json.dump(all_data, file)
 
 
-# with open('notes_data.json', 'w', encoding='utf-8') as file:
-#     data = {}
-#     json.dump(data, file)
-with open('notes_data.json', 'r', encoding='utf-8') as file:
-    all_data = json.load(file)
-    print(all_data)
+try:
+    with open('notes_data.json', 'r', encoding='utf-8') as file:
+        all_data = json.load(file)
+        print(all_data)
+except:
+    with open('notes_data.json', 'w', encoding='utf-8') as file:
+        data = {}
+        json.dump(data, file)
+    with open('notes_data.json', 'r', encoding='utf-8') as file:
+        all_data = json.load(file)
+        print(all_data)
 
 app = QApplication([])
 
@@ -215,6 +230,5 @@ enter.clicked.connect(enter_func)
 registration.clicked.connect(registration_func)
 
 login_win.show()
-
 
 app.exec_()
