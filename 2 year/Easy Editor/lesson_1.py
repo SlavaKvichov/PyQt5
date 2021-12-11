@@ -5,7 +5,7 @@ with Image.open('owl.jpg') as owl:
     print(owl.format)
     print(owl.mode)
     grey_owl = owl.convert('L')
-    grey_owl.save('grey_owl.jpg')
+    grey_owl.save('grey_owl1.jpg')
     grey_owl.show()
     mute_owl = owl.filter(ImageFilter.BLUR)
     mute_owl.show()
