@@ -4,57 +4,61 @@ from PyQt5.QtWidgets import QApplication, QWidget, \
     QListWidget, QLabel, QFileDialog
 from PyQt5.QtGui import QPixmap
 import os
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 
 
-def save_image(image, image_name):
+def save_image(image,image_name,operation):
     workdir = os.path.join(folderdir, 'Modified')
     if not os.path.isdir(workdir):
         os.mkdir(workdir)
     new_image_name = image_name.split('.')
-    image.save(os.path.join(workdir, new_image_name[0] + 'grey.' + new_image_name[1]))
-    return os.path.join(os.path.join(workdir, new_image_name[0] + 'grey.' + new_image_name[1]))
+    image.save(os.path.join(workdir, new_image_name[0] + operation + new_image_name[1]))
+    return os.path.join(os.path.join(workdir, new_image_name[0] + operation + new_image_name[1]))
 
+def copy_past():
+    global file_name
+    try:
+        file_name = img_list.selectedItems()[0].text()
+    except:
+        file_name = filelist[0]
+    global image_dir
+    image_dir = os.path.join(folderdir, file_name)
 
 def button_left_func():
-    file_name = img_list.selectedItems()[0].text()
-    image_dir = os.path.join(folderdir, file_name)
+    copy_past()
     with Image.open(image_dir) as file:
-        rot_image = file.rotate(90, expand=True)
-        # rot_image = file.transpose(Image.ROTATE_90)
-    show_image(save_image(rot_image, file_name))
+        # rot_image = file.rotate(90, expand=True)
+        rot_image = file.transpose(Image.ROTATE_90)
+    show_image(save_image(rot_image, file_name, 'rotate_l.'))
 
 
 def button_right_func():
-    file_name = img_list.selectedItems()[0].text()
-    image_dir = os.path.join(folderdir, file_name)
+    copy_past()
     with Image.open(image_dir) as file:
-        rot_image = file.rotate(-90, expand=True)
-    show_image(save_image(rot_image, file_name))
+        # rot_image = file.rotate(-90, expand=True)
+        rot_image = file.transpose(Image.ROTATE_270)
+    show_image(save_image(rot_image, file_name, 'rotate_r.'))
 
 
 def button_mirror_func():
-    file_name = img_list.selectedItems()[0].text()
-    image_dir = os.path.join(folderdir, file_name)
+    copy_past()
     with Image.open(image_dir) as file:
-        rot_image = file.transpose(Image.FLIP_LEFT_RIGHT)
-    show_image(save_image(rot_image, file_name))
+        mir_image = ImageOps.mirror(file)
+    show_image(save_image(mir_image, file_name, 'mirror.'))
 
 
 def button_blur_func():
-    file_name = img_list.selectedItems()[0].text()
-    image_dir = os.path.join(folderdir, file_name)
+    copy_past()
     with Image.open(image_dir) as file:
-        rot_image = file.filter(ImageFilter.BLUR)
-    show_image(save_image(rot_image, file_name))
+        blur_image = file.filter(ImageFilter.BLUR)
+    show_image(save_image(blur_image, file_name, 'blur.'))
 
 
 def button_grey_func():
-    file_name = img_list.selectedItems()[0].text()
-    image_dir = os.path.join(folderdir, file_name)
+    copy_past()
     with Image.open(image_dir) as file:
         grey_image = file.convert('L')
-    show_image(save_image(grey_image, file_name))
+    show_image(save_image(grey_image, file_name, 'grey.'))
 
 
 
@@ -84,20 +88,24 @@ def show_image(file):
 def folder_func():
     img_list.clear()
     global folderdir
-    folderdir = QFileDialog.getExistingDirectory()
-    print(folderdir)
-    filenames = os.listdir(folderdir)
-    print(filenames)
-    filelist = []
-    for file in filenames:
-        for req in REQUIRMENT:
-            if file.endswith(req):
-                img_list.addItem(file)
-                filelist.append(file)
     try:
-        show_image(filelist[0])
+        folderdir = QFileDialog.getExistingDirectory()
+        # print(folderdir)
+        filenames = os.listdir(folderdir)
+        # print(filenames)
+        global filelist
+        filelist = []
+        for file in filenames:
+            for req in REQUIRMENT:
+                if file.endswith(req):
+                    img_list.addItem(file)
+                    filelist.append(file)
+        try:
+            show_image(filelist[0])
+        except:
+            img.setText('Папка пустая')
     except:
-        img.setText('Папка пустая')
+        pass
 
 
 REQUIRMENT = ['jpg']
