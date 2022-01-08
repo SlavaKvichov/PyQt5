@@ -7,7 +7,12 @@ import os
 from PIL import Image, ImageFilter
 
 
-def save_image(img_name):
+def save_image(file, img_name, operation):
+    workdir = os.path.join(folderdir, 'Modified')
+    if not os.path.isdir(workdir):
+        os.mkdir(workdir)
+    file.save(os.path.join(workdir, img_name.split('.')[0] + operation + img_name.split('.')[1]))
+    return os.path.join(workdir, img_name.split('.')[0] + operation + img_name.split('.')[1])
 
 
 
@@ -16,8 +21,7 @@ def button_grey_func():
     filedir = os.path.join(folderdir, img_name)
     with Image.open(filedir) as file:
         grey_image = file.convert('L')
-    new_img_name = img_name.split('.')[0] + '(grey).' + img_name.split('.')[1]
-    save_image(new_img_name)
+    show_image(save_image(grey_image, img_name, 'grey.'))
 
 
 def img_list_func():
