@@ -12,6 +12,6 @@ sleep(2.3)
 i = input('If you want exit the program just write "exit"')
 while i != 'exit':
     if i == 'inf':
-        print("I'm friendly bot, my name is")
+        print("I'm friendly bot, my name is ")
     i = input('If you want exit the program just write "exit"')
 ij=input('Thank you, it was a pleasure talking with you, good bye.\n \nProcess finished with exit code 0')
