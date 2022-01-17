@@ -7,80 +7,77 @@ import os
 from PIL import Image, ImageFilter, ImageOps
 
 
-def save_image(file, img_name, operation):
+def save_image(image, image_name, operation):
     workdir = os.path.join(folderdir, 'Modified')
     if not os.path.isdir(workdir):
         os.mkdir(workdir)
-    file.save(os.path.join(workdir, img_name.split('.')[0] + operation + img_name.split('.')[1]))
-    return os.path.join(workdir, img_name.split('.')[0] + operation + img_name.split('.')[1])
+    image.save(os.path.join(workdir, image_name.split('.')[0] + operation + image_name.split('.')[1]))
+    return os.path.join(os.path.join(workdir, image_name.split('.')[0] + operation + image_name.split('.')[1]))
 
 
 def copy_past():
-    global img_name
+    global filename
     try:
-        img_name = img_list.selectedItems()[0].text()
+        filename = img_list.selectedItems()[0].text()
     except:
-        img_name = filelist[0]
-    global filedir
-    filedir = os.path.join(folderdir, img_name)
-
+        filename = filelist[0]
+    global img_dir
+    img_dir = os.path.join(folderdir, filename)
 
 def button_left_func():
     copy_past()
-    with Image.open(filedir) as file:
-        rotate_image = file.transpose(Image.ROTATE_90)
-    show_image(save_image(rotate_image, img_name, 'left.'))
+    with Image.open(img_dir) as file:
+        rotate_img = file.transpose(Image.ROTATE_90)
+    show_image(save_image(rotate_img, filename, 'rotateleft.'))
 
 
 def button_right_func():
     copy_past()
-    with Image.open(filedir) as file:
-        rotate_image = file.transpose(Image.ROTATE_270)
-    show_image(save_image(rotate_image, img_name, 'right.'))
+    with Image.open(img_dir) as file:
+        rotate_img = file.transpose(Image.ROTATE_270)
+    show_image(save_image(rotate_img, filename, 'rotateright.'))
 
 
 def button_mirror_func():
     copy_past()
-    with Image.open(filedir) as file:
-        mirror_image = ImageOps.mirror(file)
-    show_image(save_image(mirror_image, img_name, 'mirror.'))
+    with Image.open(img_dir) as file:
+        mirror_file = ImageOps.mirror(file)
+    show_image(save_image(mirror_file, filename, 'mirror.'))
 
 
 def button_blur_func():
     copy_past()
-    with Image.open(filedir) as file:
-        blur_image = file.filter(ImageFilter.BLUR)
-    show_image(save_image(blur_image, img_name, 'blur.'))
-
+    with Image.open(img_dir) as file:
+        blur_file = file.filter(ImageFilter.BLUR)
+    show_image(save_image(blur_file, filename, 'blur.'))
 
 def button_grey_func():
-    try:
-        copy_past()
-        with Image.open(filedir) as file:
-            grey_image = file.convert('L')
-        show_image(save_image(grey_image, img_name, 'grey.'))
-    except:
-        pass
+    copy_past()
+    with Image.open(img_dir) as file:
+        grey_image = file.convert('L')
+    show_image(save_image(grey_image, filename, 'grey.'))
+
 
 
 def img_list_func():
-    img_name = img_list.selectedItems()[0].text()
-    show_image(img_name)
+    file = img_list.selectedItems()[0].text()
+    show_image(file)
 
 
 def show_image(file):
-    filedir = os.path.join(folderdir,  file)
-    with Image.open(filedir) as file:
-        pixmapimage = QPixmap(filedir)
+    img.clear()
+    image_path = os.path.join(folderdir, file)
+    pixmapimage = QPixmap(image_path)
+    with Image.open(image_path) as file:
         w, h = file.size[0], file.size[1]
         while True:
-            if w >= 1000:
-                w /= 1.01
-                h /= 1.01
+            if w > 800:
+                w /= 1.05
+                h /= 1.05
             else:
                 break
-        w, h = int(w), int(h)
-        pixmapimage = pixmapimage.scaled(w, h, Qt.KeepAspectRatio)
+
+    pixmapimage = pixmapimage.scaled(w, h, Qt.KeepAspectRatio)
     img.setPixmap(pixmapimage)
     img.show()
 
@@ -112,7 +109,6 @@ REQUIRMENT = ['jpg']
 app = QApplication([])
 
 main_win = QWidget()
-
 main_win.setWindowTitle('Easy Editor')
 
 layout_h = QHBoxLayout()
