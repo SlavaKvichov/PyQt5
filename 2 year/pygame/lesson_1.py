@@ -47,22 +47,30 @@ while game:
     if keys_pressed[K_DOWN] and y1 < window_rez_y - 5 - bart_size:
         y1 += speed
 
+    delta_x = x3 - x1
+    if delta_x < 0:
+        delta_x = -delta_x
+    delta_y = y3 - y1
+    if delta_y < 0:
+        delta_y = -delta_y
+    hipotenyza = (delta_x ** 2 + delta_y ** 2) ** 0.5
     if x3 > x1:
-        x3 -= homer_speed
+        x3 -= homer_speed * (delta_x / hipotenyza)
     elif x3 == x1:
         pass
     else:
-        x3 += homer_speed
-
+        x3 += homer_speed * (delta_x / hipotenyza)
     if y3 > y1:
-        y3 -= homer_speed
+        y3 -= homer_speed * (delta_y / hipotenyza)
     elif y3 == y1:
         pass
     else:
-        y3 += homer_speed
+        y3 += homer_speed * (delta_y / hipotenyza)
 
     if x1 < x2 < x1 + bart_size and y1 < y2 < y1 + bart_size\
-            or x1 < x2 + berry_size < x1 + bart_size and y1 < y2 + berry_size < y1 + bart_size:
+            or x1 < x2 + berry_size < x1 + bart_size and y1 < y2 + berry_size < y1 + bart_size\
+            or x1 < x2 < x1 + bart_size and y1 < y2 + berry_size < y1 + bart_size\
+            or x1 < x2 + berry_size < x1 + bart_size and y1 < y2 < y1 + bart_size:
         mixer.init()
         mixer.music.load(os.path.join('E:\Documents\Logika/2 year\pygame', 'Sound_19349.mp3'))
         mixer.music.play()
@@ -73,8 +81,10 @@ while game:
         homer_size += 10
         homer = transform.scale(image.load('homer.png'), (homer_size, homer_size))
 
-    if x1 < x3 < x1 + bart_size and y1 < y3 < y1 + bart_size \
-            or x1 < x3 + homer_size < x1 + bart_size and y1 < y3 + homer_size < y1 + bart_size:
+    if x1 <= x3 <= x1 + bart_size and y1 <= y3 <= y1 + bart_size \
+            or x1 <= x3 + homer_size <= x1 + bart_size and y1 <= y3 + homer_size <= y1 + bart_size\
+            or x1 <= x3 + homer_size <= x1 + bart_size and y1 <= y3 <= y1 + bart_size\
+            or x1 <= x3 <= x1 + bart_size and y1 <= y3 + homer_size <= y1 + bart_size:
         speed = 0
         x1 = 9999
         y1 = 9999
