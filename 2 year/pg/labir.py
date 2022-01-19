@@ -30,6 +30,7 @@ while game:
         y1 += speed
 
     text1 = f1.render(str(o), True, (180, 0, 0))
+
     if x1 < x2 < x1 + 65 and y1 < y2 < y1 + 65:
         x2 = randint(0, 626)
         y2 = randint(0, 426)
