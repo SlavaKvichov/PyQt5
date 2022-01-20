@@ -9,8 +9,8 @@ sprite1 = transform.scale(image.load('ТРЕУГОЛЬНЫЙ БЕЛЯШ.png'), (
 sprite2 = transform.scale(image.load('КРУГЛЫЙ БЕЛЯШ.png'), (65, 65))
 x1 = 100
 y1 = 100
-x2 = 100
-y2 = 100
+x2 = 200
+y2 = 400
 clock = time.Clock()
 FPS = 60
 speed = 10
@@ -31,8 +31,8 @@ while game:
 
     text1 = f1.render(str(o), True, (180, 0, 0))
 
-    # if x1 < x2 < x1 + 65 and y1 < y2 < y1 + 65:
-    if x2 < x1 +100 and y2 < y1+100:
+    if x1 < x2 < x1 + 65 and y1 < y2 < y1 + 65:
+    # if x2 < x1 +100 and y2 < y1+100:
         x2 = randint(10, 626)
         y2 = randint(10, 426)
         o += 1
