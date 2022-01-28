@@ -34,7 +34,6 @@ while game:
     window.blit(bart, (x1, y1))
     window.blit(berry, (x2, y2))
     window.blit(homer, (x3, y3))
-
     clock.tick(FPS)
 
     keys_pressed = key.get_pressed()
@@ -72,7 +71,7 @@ while game:
             or x1 < x2 < x1 + bart_size and y1 < y2 + berry_size < y1 + bart_size\
             or x1 < x2 + berry_size < x1 + bart_size and y1 < y2 < y1 + bart_size:
         mixer.init()
-        mixer.music.load(os.path.join('E:\Documents\Logika/2 year\pygame', 'Sound_19349.mp3'))
+        mixer.music.load(os.path.join(os.path.curdir, 'Sound_19349.mp3'))
         mixer.music.play()
         x2 = randint(0, window_rez_x - berry_size + 1)
         y2 = randint(0, window_rez_y - berry_size + 1)
@@ -90,7 +89,7 @@ while game:
         y1 = 9999
         homer_speed = 0
         mixer.init()
-        mixer.music.load(os.path.join('E:\Documents\Logika/2 year\pygame', 'Sound_08426.mp3'))
+        mixer.music.load(os.path.join(os.path.curdir, 'Sound_08426.mp3'))
         mixer.music.play()
 
     for e in event.get():
