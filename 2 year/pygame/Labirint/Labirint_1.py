@@ -7,11 +7,31 @@ class Player(sprite.Sprite):
         super().__init__()
         self.image = transform.scale(image.load(image_path), (sprite_size, sprite_size))
         self.sprite_size = sprite_size
-        self.player_x = player_x
-        self.player_y = player_y
+        self.rect = self.image.get_rect()
+        self.rect.x = player_x
+        self.rect.y = player_y
         self.speed = speed
+
     def reset(self):
-        window.blit(self.image, (self.player_x, self.player_y))
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+
+class Wall(sprite.Sprite):
+    def __init__(self, color_1, color_2, color_3 , width, wall_x, wall_y, height):
+        super().__init__()
+        self.width = width
+        self.height = height
+        self.color_1 = color_1
+        self.color_2 = color_2
+        self.color_3 = color_3
+        self.image = Surface((self.width, self.height))
+        self.image.fill((self.color_1, self.color_2, self.color_3))
+        self.rect = self.image.get_rect()
+        self.rect.x = wall_x
+        self.rect.y = wall_y
+
+    def reset(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
 
 
 BASE_DIR = os.path.curdir
@@ -27,6 +47,10 @@ background = transform.scale(image.load(os.path.join(BASE_DIR, 'background.jpg')
 
 hero = Player(os.path.join(BASE_DIR, 'hero.png'), 60, 100, 100, 5)
 enemy = Player(os.path.join(BASE_DIR, 'enemy.png'), 60, 1000, 600, 2)
+enemy.dir = 'right'
+target = Player(os.path.join(BASE_DIR, 'target.png'), 60, 1050, 700, None)
+
+w1 = Wall(140, 50, 10, 20, 400, 40, 500)
 
 mixer.init()
 mixer.music.load(os.path.join(BASE_DIR, '01389.mp3'))
@@ -39,15 +63,32 @@ while game:
     window.blit(background, (0, 0))
     hero.reset()
     enemy.reset()
+    target.reset()
 
-    if keys_pressed[K_LEFT] and hero.player_x > 5:
-        hero.player_x -= hero.speed
-    if keys_pressed[K_RIGHT] and hero.player_x < window_rez_x - 5 - hero.sprite_size:
-        hero.player_x += hero.speed
-    if keys_pressed[K_UP] and hero.player_y > 5:
-        hero.player_y -= hero.speed
-    if keys_pressed[K_DOWN] and hero.player_y < window_rez_y - 5 - hero.sprite_size:
-        hero.player_y += hero.speed
+    w1.reset()
+
+    if keys_pressed[K_LEFT] and hero.rect.x > 5:
+        hero.rect.x -= hero.speed
+    if keys_pressed[K_RIGHT] and hero.rect.x < window_rez_x - 5 - hero.sprite_size:
+        hero.rect.x += hero.speed
+    if keys_pressed[K_UP] and hero.rect.y > 5:
+        hero.rect.y -= hero.speed
+    if keys_pressed[K_DOWN] and hero.rect.y < window_rez_y - 5 - hero.sprite_size:
+        hero.rect.y += hero.speed
+
+    if enemy.dir == 'right' and enemy.rect.x < window_rez_x - enemy.sprite_size:
+        enemy.rect.x += enemy.speed
+    if enemy.dir == 'right' and enemy.rect.x >= window_rez_x - enemy.sprite_size:
+        enemy.dir = 'left'
+    if enemy.dir == 'left' and enemy.rect.x > window_rez_x - 300:
+        enemy.rect.x -= enemy.speed
+    if enemy.dir == 'left' and enemy.rect.x <= window_rez_x - 300:
+        enemy.dir = 'right'
+
+    if sprite.collide_rect(hero, enemy):
+        print('lose')
+    if sprite.collide_rect(hero, target):
+        print('win')
 
     for e in event.get():
         if e.type == QUIT:
