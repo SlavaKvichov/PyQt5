@@ -1,7 +1,6 @@
 from pygame import *
 import os
 
-
 class Player(sprite.Sprite):
     def __init__(self, image_path, sprite_size, player_x, player_y, speed):
         super().__init__()
@@ -49,41 +48,25 @@ enemy = Player(os.path.join(BASE_DIR, 'enemy.png'), 60, 800, 500, 4)
 enemy.dir = 'right'
 target = Player(os.path.join(BASE_DIR, 'target.png'), 60, 850, 600, None)
 
-w1 = Wall(70, 130, 50, 20, 100, 0, 560)
-
-w2 = Wall(70, 130, 50, 20, 220, 366, 300)
-
-w3 = Wall(70, 130, 50, 20, 220, 100, 166)
-
-w4 = Wall(70, 130, 50, 150, 220, 100, 20)
-
-w5 = Wall(70, 130, 50, 20, 370, 0, 120)
-
-w6 = Wall(70, 130, 50, 270, 220, 266, 20)
-
-w7 = Wall(70, 130, 50, 20, 490, 100, 186)
-#
-w8 = Wall(70, 130, 50, 20, 610, 0, 120)
-
-w9 = Wall(70, 130, 50, 166, 610, 100, 20)
-#
-w10 = Wall(70, 130, 50, 20, 770, 100, 166)
-#
-w11 = Wall(70, 130, 50, 20, 340, 366, 200)
-#
-w12 = Wall(70, 130, 50, 450, 340, 366, 20)
-#
-w13 = Wall(70, 130, 50, 20, 630, 466, 200)
-#
-w14 = Wall(70, 130, 50, 160, 630, 466, 20)
-#
-w15 = Wall(70, 130, 50, 20, 770, 366, 120)
-
-w16 = Wall(70, 130, 50, 20, 890, 0, 486)
-
-w17 = Wall(70, 130, 50, 20, 630, 233, 20)
-
-w18 = Wall(70, 130, 50, 20, 490, 516, 20)
+for i in range(1):
+    w1 = Wall(70, 130, 50, 20, 100, 0, 560)
+    w2 = Wall(70, 130, 50, 20, 220, 366, 300)
+    w3 = Wall(70, 130, 50, 20, 220, 100, 166)
+    w4 = Wall(70, 130, 50, 150, 220, 100, 20)
+    w5 = Wall(70, 130, 50, 20, 370, 0, 120)
+    w6 = Wall(70, 130, 50, 270, 220, 266, 20)
+    w7 = Wall(70, 130, 50, 20, 490, 100, 186)
+    w8 = Wall(70, 130, 50, 20, 610, 0, 120)
+    w9 = Wall(70, 130, 50, 166, 610, 100, 20)
+    w10 = Wall(70, 130, 50, 20, 770, 100, 166)
+    w11 = Wall(70, 130, 50, 20, 340, 366, 200)
+    w12 = Wall(70, 130, 50, 450, 340, 366, 20)
+    w13 = Wall(70, 130, 50, 20, 630, 466, 200)
+    w14 = Wall(70, 130, 50, 160, 630, 466, 20)
+    w15 = Wall(70, 130, 50, 20, 770, 366, 120)
+    w16 = Wall(70, 130, 50, 20, 890, 0, 486)
+    w17 = Wall(70, 130, 50, 20, 630, 233, 20)
+    w18 = Wall(70, 130, 50, 20, 490, 516, 20)
 
 mixer.init()
 mixer.music.load(os.path.join(BASE_DIR, '01389.mp3'))
@@ -98,24 +81,25 @@ while game:
     enemy.reset()
     target.reset()
 
-    w1.reset()
-    w2.reset()
-    w3.reset()
-    w4.reset()
-    w5.reset()
-    w6.reset()
-    w7.reset()
-    w8.reset()
-    w9.reset()
-    w10.reset()
-    w11.reset()
-    w12.reset()
-    w13.reset()
-    w14.reset()
-    w15.reset()
-    w16.reset()
-    w17.reset()
-    w18.reset()
+    for i in range(1):
+        w1.reset()
+        w2.reset()
+        w3.reset()
+        w4.reset()
+        w5.reset()
+        w6.reset()
+        w7.reset()
+        w8.reset()
+        w9.reset()
+        w10.reset()
+        w11.reset()
+        w12.reset()
+        w13.reset()
+        w14.reset()
+        w15.reset()
+        w16.reset()
+        w17.reset()
+        w18.reset()
 
     if keys_pressed[K_LEFT] and hero.rect.x > 5:
         hero.rect.x -= hero.speed
